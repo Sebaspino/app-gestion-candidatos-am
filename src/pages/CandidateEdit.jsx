@@ -36,7 +36,28 @@ function CandidateEdit() {
     getCandidate();
   }, []);
 
-  function updateCandidate() {}
+  function updateCandidate() {
+    let candidate = {
+      fullName,
+      email,
+      phone,
+      location,
+      seniority,
+      createdAt,
+      yearsExperience,
+      skills,
+      appliedOfferId,
+      status,
+    };
+    fetch(end_points.candidates + "/" + id.id, {
+      method: "PATCH",
+      body: JSON.stringify(candidate),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        redirect("Candidato editado", "/dashboard/candidates", "success");
+      });
+  }
 
   return (
     <div className="rounded-xxl border border-slate-200 bg-white shadow-sm overflow-hidden">
@@ -60,6 +81,7 @@ function CandidateEdit() {
             Cancelar
           </button>
           <button
+            onClick={updateCandidate}
             type="button"
             className="rounded-lg px-3 py-2 text-sm font-semibold bg-primary hover:bg-primary/90 text-white transition-colors"
           >
@@ -80,6 +102,7 @@ function CandidateEdit() {
             </label>
             <input
               value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               type="text"
               defaultValue="Ana Martínez"
               className="mt-1 w-full px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -91,6 +114,7 @@ function CandidateEdit() {
               Estado
             </label>
             <select
+              onChange={(e) => setStatus(e.target.value)}
               value={status}
               defaultValue="new"
               className="mt-1 w-full px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -110,6 +134,7 @@ function CandidateEdit() {
             </label>
             <input
               value={email}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               defaultValue="ana.martinez@gmail.com"
               className="mt-1 w-full px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -122,6 +147,7 @@ function CandidateEdit() {
             </label>
             <input
               value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               type="tel"
               defaultValue="+57 301 555 0101"
               className="mt-1 w-full px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -134,6 +160,7 @@ function CandidateEdit() {
             </label>
             <input
               value={location}
+              onChange={(e) => setLocation(e.target.value)}
               type="text"
               defaultValue="Bogotá, CO"
               className="mt-1 w-full px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -146,6 +173,7 @@ function CandidateEdit() {
             </label>
             <select
               value={seniority}
+              onChange={(e) => setSeniority(e.target.value)}
               defaultValue="Junior"
               className="mt-1 w-full px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             >
@@ -162,6 +190,7 @@ function CandidateEdit() {
             </label>
             <input
               value={yearsExperience}
+              onChange={(e) => setSeniority(e.target.value)}
               type="number"
               min="0"
               defaultValue="1"
@@ -175,6 +204,7 @@ function CandidateEdit() {
             </label>
             <input
               value={appliedOfferId}
+              onChange={(e) => setAppliedOfferId(e.target.value)}
               type="number"
               min="0"
               defaultValue="45"
@@ -194,15 +224,16 @@ function CandidateEdit() {
           </div>
 
           <div className="lg:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-            {skills.map(() => (
+            {skills.map((item) => (
               <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
                 <input
                   defaultChecked
+                  onChange={(e) => setSkills(e.target.value)}
                   type="checkbox"
                   className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary/20"
                 />
                 <span className="text-sm font-medium text-slate-700">
-                  React
+                  {item}
                 </span>
               </label>
             ))}
